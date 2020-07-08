@@ -14,8 +14,10 @@ $creds = New-Object –TypeName System.Management.Automation.PSCredential –Arg
 $bacpacFilename = $DatabaseNames + (Get-Date).ToString("yyyyMMddHHmm") + ".bacpac"
 $bacpacUri = $BlobStorageEndpoint+ "/" + $BlobContainerName+ "/" + $bacpacFilename
  Write-Output "backup files created"   
-$exportRequest = New-AzureRmSqlDatabaseExport –DatabaseName $DatabaseNames –ServerName $DatabaseServerName –storageKey $StorageKey -storageUri $bacpacUri –AdministratorLogin $creds.UserName –AdministratorLoginPassword $creds.Password -ResourceGroupName $ResourceGroupName
-                                                
+#$exportRequest = New-AzureRmSqlDatabaseExport –DatabaseName $DatabaseNames –ServerName $DatabaseServerName –storageKey $StorageKey -storageUri $bacpacUri –AdministratorLogin $creds.UserName –AdministratorLoginPassword $creds.Password -ResourceGroupName $ResourceGroupName
+
+$exportRequest= New-AzureRmSqlDatabaseExport -ResourceGroupName $ResourceGroupName -DatabaseName $DatabaseNames -ServerName $DatabaseServerName -StorageKey $StorageKey -StorageAccessKey $StorageAccessKey -storageUri $bacpacUri -–AdministratorLogin $creds.UserName -AdministratorLoginPassword -creds.Password           
+
                             
                                                 
                                                 
