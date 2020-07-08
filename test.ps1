@@ -14,11 +14,10 @@
 	 $bacpacFilename = $DatabaseNames + (Get-Date).ToString("yyyyMMddHHmm") + ".bacpac"
 	 $bacpacUri = $BlobStorageEndpoint+ "/" + $BlobContainerName+ "/" + $bacpacFilename
         Write-Output "backup files created"   
-		 $exportRequest = New-AzureRmSqlDatabaseExport`
-                                                –DatabaseName $DatabaseNames`
-                                                –ServerName $DatabaseServerName`
-                                                –storageKey $StorageKey`
-                                                -StorageUri $bacpacUri`
-                                                –AdministratorLogin $creds.UserName`
-                                                –AdministratorLoginPassword $creds.Password`
-                                                -ResourceGroupName $ResourceGroupName
+	$exportRequest = New-AzureRmSqlDatabaseExport –DatabaseName $DatabaseNames –ServerName $DatabaseServerName –storageKey $StorageKey -storageUri $bacpacUri –AdministratorLogin $creds.UserName –AdministratorLoginPassword $creds.Password -ResourceGroupName $ResourceGroupName
+                                                
+                            
+                                                
+                                                
+                                                
+                                                
