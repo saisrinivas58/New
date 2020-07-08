@@ -1,8 +1,8 @@
 [String]$ResourceGroupName="DEVOPS-TRAINING-RG"
 [String]$DatabaseServerName="mytestdb456"
 [String]$DatabaseAdminUsername="cproot"
-[String]$DatabaseAdminPassword="Password@"
-#[String]$DatabaseAdminPassword= ConvertTo-SecureString -String "Password@" –AsPlainText -Force 
+#[String]$DatabaseAdminPassword="Password@"
+[String]$DatabaseAdminPassword= ConvertTo-SecureString -String "Password@" –AsPlainText -Force 
 [String]$DatabaseNames="Mydb"
 [String]$StorageAccountName="devopstraineestroage"
 [String]$BlobStorageEndpoint="https://devopstraineestroage.blob.core.windows.net"
