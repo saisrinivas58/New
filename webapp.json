@@ -1,0 +1,66 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "functions": [],
+    "variables": {
+        "website": "testdemosample123"
+    },
+    "resources": [
+        {
+            "name": "testdemosample123",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/testdemosample123')]": "Resource",
+                "displayName": "testdemosample123"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', 'testdemosample123')]"
+            ],
+            "properties": {
+                "name": "testdemosample123",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'testdemosample123')]"
+                
+            },
+            "resources":[
+            {
+               "name": "appsettings",
+               "type": "config",
+               "apiVersion": "2018-11-01",
+                "dependsOn": [
+                "[concat('Microsoft.Web/sites/', variables('website'))]"
+               ],
+                  "tags": {
+                      "displayName": "WebAppSettings"
+                    },
+                "properties": {
+                 "ida:ApiToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiV29ybGRWaXNpb24iLCJleHAiOjE5MDM2NzY0NDF9.bSUG0FBOf5XXdUuhZ8Tsp87IXcZG7Q8A8u_IHIf6f9I",
+                 "ida:ApiBaseUrl": "https://msapi-sandbox-apim.azure-api.net/"
+    }
+}
+    ]
+        },
+        {
+            "name": "testdemosample123",
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "F1",
+                "capacity": 1
+            },
+            "tags": {
+                "displayName": "testdemosample123"
+            },
+            "properties": {
+                "name": "testdemosample123"
+            }
+        }      
+      
+
+    ],
+    
+    "outputs": {}
+}   

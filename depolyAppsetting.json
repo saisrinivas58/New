@@ -1,0 +1,45 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"webSiteName": {
+			"type": "string"
+		},
+		"ida:ApiToken": {
+			"type": "string"
+		},
+		"ida:ApiBaseUrl":{
+            "type": "string"
+        }
+	},
+	"variables": {
+		
+	},
+	"resources": [
+		{
+			"apiVersion": "2015-08-01",
+			"name": "[parameters('webSiteName')]",
+			"type": "Microsoft.Web/sites",
+			"location": "[resourceGroup().location]",
+			"dependsOn": [],
+			"properties": {
+				
+			},
+			"resources": [
+				{
+					"name": "appsettings",
+					"type": "config",
+					"apiVersion": "2018-11-01",
+					"dependsOn": [
+						"[resourceId('Microsoft.Web/Sites/', parameters('webSiteName'))]"
+					],
+					"properties": {
+						"ida:ApiToken": "[parameters('ida:ApiToken')]",
+						"ida:ApiBaseUrl": "[parameters('ida:ApiBaseUrl')]"
+						
+					}
+				}
+			]
+		}
+	]
+}
