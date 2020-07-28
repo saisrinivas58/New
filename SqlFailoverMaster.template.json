@@ -26,43 +26,17 @@
 		"primarysqlserverName": "[toLower(concat(parameters('environmentName'), '-sql-server'))]",
 		"databaseenv": "[replace(parameters('environmentName'), '-', '')]",
 		"primarydatabaseName": "[toLower(concat(variables('databaseenv'), 'db'))]",
-        "secondarysqlserverName": "[toLower(concat(parameters('environmentName'), '-sql-server'))]",
+        "secondarysqlserverName": "[toLower(concat(variables('primarysqlserverName'), '-failover'))]",
 		"databaseenv1": "[replace(parameters('environmentName'), '-', '')]",
 		"secondarydatabaseName": "[toLower(concat(variables('databaseenv1'), 'failoverdb'))]",
 		"sqlServerTemplate": "sqlServerTemplate"
+        
 		
 		
 		
 	},
 	"resources": [
-		{
-			"apiVersion": "[variables('apiVersion')]",
-			"resourceGroup": "[variables('resourceGroup')]",
-			"name": "[variables('sqlServerTemplate')]",
-			"type": "Microsoft.Resources/deployments",
-			"properties": {
-				"mode": "[variables('mode')]",
-				"templateLink": {
-					"uri": "[variables('nestedSQLServerConfigTemplateFile')]",
-					"contentVersion": "[variables('contentVersion')]"
-				},
-				"parameters": {
-					"administratorLogin": {
-						"value": "[parameters('administratorLogin')]"
-					},
-					"administratorLoginPassword": {
-						"value": "[parameters('administratorLoginPassword')]"
-					},
-					"priamrysqlserverName": {
-						"value": "[variables('primarysqlserverName')]"
-					},
-					"databaseName": {
-						"value": "[variables('primarydatabaseName')]"
-					}
-				}
-			}
-		},
-        {
+		   {
 			"apiVersion": "[variables('apiVersion')]",
 			"resourceGroup": "[variables('resourceGroupfail')]",
 			"name": "[variables('sqlServerTemplate')]",
@@ -80,15 +54,46 @@
 					"administratorLoginPassword": {
 						"value": "[parameters('administratorLoginPassword')]"
 					},
-					"priamrysqlserverName": {
+					"secondarysqlserverName": {
 						"value": "[variables('secondarysqlserverName')]"
 					},
-					"databaseName": {
+					"secondarydatabaseName": {
 						"value": "[variables('secondarydatabaseName')]"
 					}
 				}
 			}
+		},
+        {
+			"apiVersion": "[variables('apiVersion')]",
+			"resourceGroup": "[variables('resourceGroup')]",
+			"name": "[variables('sqlServerTemplate')]",
+			"type": "Microsoft.Resources/deployments",
+			"properties": {
+				"mode": "[variables('mode')]",
+				"templateLink": {
+					"uri": "[variables('nestedSQLServerConfigTemplateFile')]",
+					"contentVersion": "[variables('contentVersion')]"
+				},
+				"parameters": {
+					"administratorLogin": {
+						"value": "[parameters('administratorLogin')]"
+					},
+					"administratorLoginPassword": {
+						"value": "[parameters('administratorLoginPassword')]"
+					},
+					"primarysqlserverName": {
+						"value": "[variables('primarysqlserverName')]"
+					},
+					"primarydatabaseName": {
+						"value": "[variables('primarydatabaseName')]"
+					},
+                    "secondarysqlserverName": {
+						"value": "[variables('secondarysqlserverName')]"
+					}
+				}
+			}
 		}
+     
 		
 	
 		

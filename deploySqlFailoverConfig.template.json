@@ -79,35 +79,7 @@
 				"administratorLoginPassword": "[parameters('administratorLoginPassword')]"
 			},
 			"resources": [
-				{ 
-            "type": "failoverGroups",
-            "apiVersion": "2015-05-01-preview",
-            "name": "[parameters('failureGRP')]",
-            "properties": {
-            "serverName": "[parameters('primarysqlserverName')]",
-            "partnerServers": [
-                    {
-                        "id": "[resourceId('Microsoft.Sql/servers', parameters('secondarysqlserverName'))]"
-                    }
-             ],
-            
-             "readWriteEndpoint": {
-              "failoverPolicy": "Automatic",
-              "failoverWithDataLossGracePeriodMinutes": 60
-            },
-            "readOnlyEndpoint": {
-              "failoverPolicy": "Disabled"
-            },
-             "databases": [
-                    "[resourceId('Microsoft.Sql/servers/databases', parameters('primarysqlserverName'), parameters('primarydatabaseName'))]"
-                ]
-            },
-            "dependsOn": [
-                "[parameters('primarysqlserverName')]",
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('primarysqlserverName'), parameters('primarydatabaseName'))]",
-                 "[resourceId('Microsoft.Sql/servers', parameters('secondarysqlserverName'))]"
-            ]
-         },
+		    
 				{
 					"name": "[parameters('primarydatabaseName')]",
 					"type": "databases",
@@ -138,7 +110,36 @@
 						"endIpAddress": "0.0.0.0",
 						"startIpAddress": "0.0.0.0"
 					}
-				}
+				},
+				 { 
+            "type": "failoverGroups",
+            "apiVersion": "2015-05-01-preview",
+            "name": "[parameters('failureGRP')]",
+            "properties": {
+            "serverName": "[parameters('primarysqlserverName')]",
+            "partnerServers": [
+                    {
+                        "id": "[resourceId('Microsoft.Sql/servers', parameters('secondarysqlserverName'))]"
+                    }
+             ],
+            
+             "readWriteEndpoint": {
+              "failoverPolicy": "Automatic",
+              "failoverWithDataLossGracePeriodMinutes": 60
+            },
+            "readOnlyEndpoint": {
+              "failoverPolicy": "Disabled"
+            },
+             "databases": [
+                    "[resourceId('Microsoft.Sql/servers/databases', parameters('primarysqlserverName'), parameters('primarydatabaseName'))]"
+                ]
+            },
+            "dependsOn": [
+                "[parameters('primarysqlserverName')]",
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('primarysqlserverName'), parameters('primarydatabaseName'))]",
+                 "[resourceId('Microsoft.Sql/servers', parameters('secondarysqlserverName'))]"
+            ]
+         }
 			
 			]
 		}
