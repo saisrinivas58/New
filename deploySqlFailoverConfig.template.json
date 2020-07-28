@@ -15,7 +15,7 @@
         },
         "failoverGRP": {
             "type": "string",
-            "defaultValue": "failgrp"
+            "defaultValue": "fail"
         }
     },
     "functions": [],
