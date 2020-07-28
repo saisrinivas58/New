@@ -2,7 +2,7 @@
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
 	"contentVersion": "1.0.0.0",
 	"parameters": {
-		"secondarysqlserverName": {
+		"failoversqlserverName": {
 			"type": "string"
 		},
 		"administratorLogin": {
@@ -10,44 +10,8 @@
 		},
 		"administratorLoginPassword": {
 			"type": "securestring"
-		},
-		"secondarydatabaseName": {
-			"type": "string"
-		},
-		
-		"collation": {
-			"type": "string",
-			"defaultValue": "SQL_Latin1_General_CP1_CI_AS"
-		},
-		"edition": {
-			"type": "string",
-			"defaultValue": "Basic",
-			"allowedValues": [
-				"Basic",
-				"Standard",
-				"Premium"
-			]
-		},
-		"maxSizeBytes": {
-			"type": "string",
-			"defaultValue": "1073741824"
-		},
-		"requestedServiceObjectiveName": {
-			"type": "string",
-			"defaultValue": "Basic",
-			"allowedValues": [
-				"Basic",
-				"S0",
-				"S1",
-				"S2",
-				"P1",
-				"P2",
-				"P3"
-			],
-			"metadata": {
-				"description": "Describes the performance level for Edition"
-			}
 		}
+	
 	},
 	"variables": {
 		"location": "[resourceGroup().location]",
@@ -56,7 +20,7 @@
 	},
 	"resources": [
 		{
-			"name": "[parameters('secondarysqlserverName')]",
+			"name": "[parameters('failoversqlserverName')]",
 			"type": "Microsoft.Sql/servers",
 			"location": "[variables('location')]",
 			"tags": {
@@ -68,29 +32,12 @@
 				"administratorLoginPassword": "[parameters('administratorLoginPassword')]"
 			},
 			"resources": [
-				{
-					"name": "[parameters('secondarydatabaseName')]",
-					"type": "databases",
-					"location": "[variables('location')]",
-					"tags": {
-						"displayName": "Database"
-					},
-					"apiVersion": "[variables('apiVersion')]",
-					"dependsOn": [
-						"[resourceId('Microsoft.Sql/servers/', parameters('secondarysqlserverName'))]"
-					],
-					"properties": {
-						"edition": "[parameters('edition')]",
-						"collation": "[parameters('collation')]",
-						"maxSizeBytes": "[parameters('maxSizeBytes')]",
-						"requestedServiceObjectiveName": "[parameters('requestedServiceObjectiveName')]"
-					}
-				},
+				
 				{
 					"type": "firewallrules",
 					"apiVersion": "[variables('apiVersion')]",
 					"dependsOn": [
-						"[resourceId('Microsoft.Sql/servers/', parameters('secondarysqlserverName'))]"
+						"[resourceId('Microsoft.Sql/servers/', parameters('failoversqlserverName'))]"
 					],
 					"location": "[variables('location')]",
 					"name": "AllowAllWindowsAzureIps",
@@ -104,9 +51,6 @@
 		}
 	],
 	"outputs": {
-		"sqlrefernceid": {
-			"type": "string",
-			"value": "[resourceId('Microsoft.Sql/servers/databases', parameters('secondarysqlserverName'), parameters('secondarydatabaseName'))]"
-		}
+		
 	}
 }
