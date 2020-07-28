@@ -17,7 +17,7 @@
     "functions": [],
     "variables": {
         "location": "[resourceGroup().location]",
-        "failovervalue":"dbrecovery"
+        "failovervalue":"dbrecovery456789"
     },
     "resources": [
         {
