@@ -15,7 +15,7 @@
         },
         "failoverGRP": {
             "type": "string",
-            "defaultValue": "recoverydatabase"
+            "defaultValue": "failgrp"
         }
     },
     "functions": [],
