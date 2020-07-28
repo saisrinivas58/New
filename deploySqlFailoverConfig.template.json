@@ -13,7 +13,7 @@
         "failoversqlserverName": {
             "type": "string"
         },
-        "failoverGRP": {
+        "failovergrp": {
             "type": "string"
            
         }
