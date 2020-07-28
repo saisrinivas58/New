@@ -12,22 +12,18 @@
 
         "failoversqlserverName": {
             "type": "string"
-        },
-        "failovergrp": {
-            "type": "string",
-             "defaultValue":"db_failovertest_group"
-           
         }
     },
     "functions": [],
     "variables": {
-        "location": "[resourceGroup().location]"
+        "location": "[resourceGroup().location]",
+        "failovervalue":"dbrecovery"
     },
     "resources": [
         {
             "type": "Microsoft.Sql/servers/failoverGroups",
             "apiVersion": "2015-05-01-preview",
-            "name": "[parameters('failovergrp')]",
+            "name": "[concat(parameters('sqlserverName'), variables('failovervalue'))]",
             "location": "[variables('location')]",
              "dependsOn": [              
                  "[resourceId('Microsoft.Sql/servers', parameters('sqlserverName'))]",
