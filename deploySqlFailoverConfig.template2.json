@@ -18,9 +18,9 @@
 			"type": "string"
 		},
 
-		"failureGRP": {
+		"failoverGRP": {
 			"type": "string",
-			"defaultValue": "Fail-over-GRP"
+			"defaultValue": "recoverydatabase"
 		},
 
 
