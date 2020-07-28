@@ -14,7 +14,8 @@
             "type": "string"
         },
         "failovergrp": {
-            "type": "string"
+            "type": "string",
+             "defaultValue":"db_failovertestgroup"
            
         }
     },
