@@ -1,0 +1,100 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"administratorLogin": {
+			"type": "string"
+		},
+		"administratorLoginPassword": {
+			"type": "securestring"
+		},
+		"environmentName": {
+			"type": "string"
+		}
+	
+	},
+	"variables": {
+        "baseTemplateUrl":"https://raw.githubusercontent.com/saisrinivas58/new/master",
+		//"nestedSQLServerTemplateFile": "[concat(parameters('GitHubFetcherWebServiceURI'), '?githuburi=', parameters('_GitHubLocation'), '/', 'deploySqlServer.template.json', '&githubaccesstoken=', parameters('_GitHubAccessToken'))]",
+		"nestedSQLServerConfigTemplateFile": "[concat(variables('baseTemplateUrl'), '/', 'deploySqlFailoverConfig.template.json')]",
+        "nestedSQLFailoverTemplateFile": "[concat(variables('baseTemplateUrl'), '/', 'deploySqlFailoverServer.template.json')]",
+        "resourceGroup": "[concat(parameters('environmentName'),'-RG')]",
+		"resourceGroupfail": "[concat(parameters('environmentName'), '-failover-RG')]",
+		"apiVersion": "2017-05-10",
+		"contentVersion": "1.0.0.0",
+		"mode": "Incremental",
+		"primarysqlserverName": "[toLower(concat(parameters('environmentName'), '-sql-server'))]",
+		"databaseenv": "[replace(parameters('environmentName'), '-', '')]",
+		"primarydatabaseName": "[toLower(concat(variables('databaseenv'), 'db'))]",
+        "secondarysqlserverName": "[toLower(concat(parameters('environmentName'), '-sql-server'))]",
+		"databaseenv1": "[replace(parameters('environmentName'), '-', '')]",
+		"secondarydatabaseName": "[toLower(concat(variables('databaseenv1'), 'failoverdb'))]",
+		"sqlServerTemplate": "sqlServerTemplate"
+		
+		
+		
+	},
+	"resources": [
+		{
+			"apiVersion": "[variables('apiVersion')]",
+			"resourceGroup": "[variables('resourceGroup')]",
+			"name": "[variables('sqlServerTemplate')]",
+			"type": "Microsoft.Resources/deployments",
+			"properties": {
+				"mode": "[variables('mode')]",
+				"templateLink": {
+					"uri": "[variables('nestedSQLServerConfigTemplateFile')]",
+					"contentVersion": "[variables('contentVersion')]"
+				},
+				"parameters": {
+					"administratorLogin": {
+						"value": "[parameters('administratorLogin')]"
+					},
+					"administratorLoginPassword": {
+						"value": "[parameters('administratorLoginPassword')]"
+					},
+					"priamrysqlserverName": {
+						"value": "[variables('primarysqlserverName')]"
+					},
+					"databaseName": {
+						"value": "[variables('primarydatabaseName')]"
+					}
+				}
+			}
+		},
+        {
+			"apiVersion": "[variables('apiVersion')]",
+			"resourceGroup": "[variables('resourceGroupfail')]",
+			"name": "[variables('sqlServerTemplate')]",
+			"type": "Microsoft.Resources/deployments",
+			"properties": {
+				"mode": "[variables('mode')]",
+				"templateLink": {
+					"uri": "[variables('nestedSQLFailoverTemplateFile')]",
+					"contentVersion": "[variables('contentVersion')]"
+				},
+				"parameters": {
+					"administratorLogin": {
+						"value": "[parameters('administratorLogin')]"
+					},
+					"administratorLoginPassword": {
+						"value": "[parameters('administratorLoginPassword')]"
+					},
+					"priamrysqlserverName": {
+						"value": "[variables('secondarysqlserverName')]"
+					},
+					"databaseName": {
+						"value": "[variables('secondarydatabaseName')]"
+					}
+				}
+			}
+		}
+		
+	
+		
+		
+	
+	
+  
+    ]
+}
