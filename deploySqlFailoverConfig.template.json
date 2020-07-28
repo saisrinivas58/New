@@ -19,36 +19,38 @@
         }
     },
     "functions": [],
-    "variables": {},
+    "variables": {
+        "location": "[resourceGroup().location]"
+    },
     "resources": [
         {
             "type": "Microsoft.Sql/servers/failoverGroups",
             "apiVersion": "2015-05-01-preview",
             "name": "[parameters('failoverGRP')]",
+            "location": "[variables('location')]",
+             "dependsOn": [              
+                 "[resourceId('Microsoft.Sql/servers', parameters('sqlserverName'))]",
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlserverName'), parameters('databaseName'))]"
+            ],
             "properties": {
-                "serverName": "[parameters('sqlserverName')]",
-                "partnerServers": [
-                    {
-                        "id": "[resourceId('Microsoft.Sql/servers', parameters('failoversqlserverName'))]"
-                    }
-                ],
-
                 "readWriteEndpoint": {
                     "failoverPolicy": "Automatic",
                     "failoverWithDataLossGracePeriodMinutes": 60
                 },
-                "readOnlyEndpoint": {
+                 "readOnlyEndpoint": {
                     "failoverPolicy": "Disabled"
                 },
+                "partnerServers": [
+                    {
+                       "id": "[resourceId('Microsoft.Sql/servers', parameters('failoversqlserverName'))]"
+                    }
+                ],                
+               
                 "databases": [
                     "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlserverName'), parameters('databaseName'))]"
                 ]
             },
-            "dependsOn": [
-                "[parameters('sqlserverName')]",
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlserverName'), parameters('databaseName'))]",
-                "[resourceId('Microsoft.Sql/servers', parameters('failoversqlserverName'))]"
-            ]
+           
         }
     ],
     "outputs": {}
