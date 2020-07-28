@@ -2,17 +2,17 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "primarysqlserverName": {
+        "sqlserverName": {
             "type": "string"
         },
+
+        "databaseName": {
+            "type": "string"
+        },
+
         "failoversqlserverName": {
             "type": "string"
         },
-
-        "primarydatabaseName": {
-            "type": "string"
-        },
-
         "failoverGRP": {
             "type": "string",
             "defaultValue": "recoverydatabase"
@@ -26,7 +26,7 @@
             "apiVersion": "2015-05-01-preview",
             "name": "[parameters('failoverGRP')]",
             "properties": {
-                "serverName": "[parameters('primarysqlserverName')]",
+                "serverName": "[parameters('sqlserverName')]",
                 "partnerServers": [
                     {
                         "id": "[resourceId('Microsoft.Sql/servers', parameters('failoversqlserverName'))]"
@@ -41,12 +41,12 @@
                     "failoverPolicy": "Disabled"
                 },
                 "databases": [
-                    "[resourceId('Microsoft.Sql/servers/databases', parameters('primarysqlserverName'), parameters('primarydatabaseName'))]"
+                    "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlserverName'), parameters('databaseName'))]"
                 ]
             },
             "dependsOn": [
-                "[parameters('primarysqlserverName')]",
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('primarysqlserverName'), parameters('primarydatabaseName'))]",
+                "[parameters('sqlserverName')]",
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlserverName'), parameters('databaseName'))]",
                 "[resourceId('Microsoft.Sql/servers', parameters('failoversqlserverName'))]"
             ]
         }
