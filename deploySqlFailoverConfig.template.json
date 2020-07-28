@@ -14,8 +14,8 @@
             "type": "string"
         },
         "failoverGRP": {
-            "type": "string",
-            "defaultValue": "db-testfailuregrp"
+            "type": "string"
+           
         }
     },
     "functions": [],
