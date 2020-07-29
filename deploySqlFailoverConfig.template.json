@@ -17,7 +17,7 @@
     "functions": [],
     "variables": {
         "location": "[resourceGroup().location]",
-        "failovervalue":"FailoverDatabase"
+        "failovervalue":"/FailoverDatabase"
     },
     "resources": [
         {
